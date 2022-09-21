@@ -1,30 +1,19 @@
 package com.unlimint.orders.parser.job;
 
-import java.util.List;
-import java.util.concurrent.Callable;
-
-import org.springframework.beans.factory.annotation.Autowired;
-
-import com.unlimint.orders.parser.model.Order;
-
+import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
-public class ProcessFileJob implements Callable<List<Order>> {
-
-	@Autowired
-	private ParserFactory parserFactory;
+@AllArgsConstructor
+public class ProcessFileJob implements Runnable {
 
 	private String fileName;
 
-	public ProcessFileJob(String fileName) {
-
-	}
+	private DataParser parser;
 
 	@Override
-	public List<Order> call() {
-		DataParser parser = parserFactory.getParser(fileName.split("\\.")[1]);
-		return parser.parse(fileName);
+	public void run() {
+		parser.parse(fileName);
 	}
 
 }
